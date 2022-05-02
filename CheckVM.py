@@ -32,22 +32,30 @@ def check_vm(ip, id):
             run('unlock', id)
         except:
             warn(f"Failed to unlock {vm}")
+            warn(str(sys.exc_info()[0]) + " occurred.")
         try:
             info(f"Unlocked {vm}, now attempting to stop it")
             run('stop', id)
         except:
             warn(f"Failed to stop {vm}")
+            warn(str(sys.exc_info()[1]) + " occurred.")
         try:
             info(f"Stopped {vm}, now attempting to start it")
             run('start', id)
         except:
             warn(f"Failed to start {vm}")
+            warn(str(sys.exc_info()[2]) + " occurred.")
 
 if __name__ == '__main__':
-    info("CheckVM.py started")
+
+    print('CheckVM.py started'
+          + '\n\n')
+    
     parser = argparse.ArgumentParser(description='Check VM status')
     parser.add_argument('-i', '--ip', type=str, help='IP address of VM')
     parser.add_argument('-id', '--id', type=str, help='ID of VM')
+    
     args = parser.parse_args(sys.argv[1:])
-    info("Pinging VM {id} at {ip}")
+    
+    print('Checking VM ' + args.id + ' at ' + args.ip)
     check_vm(args.ip, args.id)
