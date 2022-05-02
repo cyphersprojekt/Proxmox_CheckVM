@@ -6,5 +6,14 @@
 ## Requires:
 
 * python3
-* python3-pip (to install ping3)
+* python3-pip (to install ping3 & argparse)
 * ping3
+* argparse
+
+## Usage:
+
+* git clone https://github.com/cyphersprojekt/Proxmox_CheckVM.git
+* cd Proxmox_CheckVM/
+* chmod a+x CheckVM.py
+
+* ./CheckVM.py --ip 'your VMs IP' --id 'your VMs QM ID' -> BUT IT DOESN'T WORK
