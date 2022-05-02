@@ -1,29 +1,43 @@
 #!/usr/bin/python3
 
+PATH_QM_BIN='/usr/bin/qm'
+PATH_LOG='/var/log/CheckVM.log'
+
 import ping3, datetime, subprocess, logging
 
-logging.basicConfig(filename='/var/log/CheckVM.log', filemode='a', format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename=PATH_LOG,
+                    filemode='a', 
+                    format='%(name)s - %(levelname)s - %(message)s')
 
-def check_vm(ip, id):
+def info(s):
+    logging.info(str(datetime.datetime.now()) + ' ' + s)
+
+def warn(s):
+    logging.critical(str(datetime.datetime.now()) + ' ' + s )
+
+def check_vm(ip, id):       
+    vm = f'VM {id} at {ip}'
 
     if ping3.ping(ip):
-        print(str(datetime.datetime.now()) + " VM {id} at {ip} is up".format(ip=ip, id=id))
+        info(f"{vm} is up")
 
     else:
-        print(str(datetime.datetime.now()) + " VM {id} at {ip} is down".format(ip=ip, id=id))
-        logging.critical(str(datetime.datetime.now()) + " VM {id} at {ip} is down".format(ip=ip, id=id))
+        warn(f"{vm} is down")
 
+        def run(*args):
+            subprocess.run([PATH_QM_BIN]+args, capture_output=True, check=True)
+            
         try:
-            logging.info(str(datetime.datetime.now()) + "Attempting to unlock VM {id} at {ip}".format(ip=ip, id=id))
-            subprocess.run(['qm', 'unlock', id], capture_output=True)
-            logging.info(str(datetime.datetime.now()) + "Unlocked VM {id} at {ip}, now attempting to stop it".format(ip=ip, id=id))
-            subprocess.run(['qm', 'stop', id], capture_output=True)
-            logging.info(str(datetime.datetime.now()) + "Stopped VM {id} at {ip}, now attempting to start it".format(ip=ip, id=id))
-            subprocess.run(['qm', 'start', id], capture_output=True)
-
+            info(f"Attempting to unlock {vm}")
+            run('unlock', id)
+            info(f"Unlocked {vm}, now attempting to stop it")
+            run('stop', id)
+            info(f"Stopped {vm}, now attempting to start it")
+            run('start', id)
         except:
-            logging.critical(str(datetime.datetime.now()) + "Failed to unlock and start VM {id} at {ip}".format(ip=ip, id=id))
+            warn(f"Failed to unlock and start {vm}")
 
-logging.info(str(datetime.datetime.now()) + "CheckVM.py started")
-logging.info(str(datetime.datetime.now()) + "Pinging VM 106")
-check_vm('192.168.18.7', '106')
+if __name__ == '__main__':
+    info("CheckVM.py started")
+    info("Pinging VM 106")
+    check_vm('192.168.18.7', '106')
