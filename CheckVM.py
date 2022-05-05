@@ -26,7 +26,7 @@ def check_vm(ip, id):
 
         def run(*args):
             subprocess.run((QM,)+args, capture_output=True, check=True)
-            return subprocess.run((QM,)+args, capture_output=True, check=True)
+#            return subprocess.run((QM,)+args, capture_output=True, check=True)
             
         try:
             info(f"Attempting to unlock {vm}")
