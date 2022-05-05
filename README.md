@@ -16,4 +16,4 @@
 * cd Proxmox_CheckVM/
 * chmod a+x CheckVM.py
 
-* ./CheckVM.py --ip 'your VMs IP' --id 'your VMs QM ID' -> BUT IT DOESN'T WORK
+* ./CheckVM.py --ip 'your VMs IP' --id 'your VMs QM ID'
