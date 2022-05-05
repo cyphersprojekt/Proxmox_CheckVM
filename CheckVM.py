@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-PATH_QM_BIN='/usr/bin/qm'
+QM='qm'
 PATH_LOG='/var/log/CheckVM.log'
 
 import ping3, datetime, subprocess, logging, argparse, sys
@@ -25,7 +25,8 @@ def check_vm(ip, id):
         warn(f"{vm} is down")
 
         def run(*args):
-            subprocess.run([PATH_QM_BIN]+args, capture_output=True, check=True)
+            subprocess.run((QM,)+args, capture_output=True, check=True)
+            return subprocess.run((QM,)+args, capture_output=True, check=True)
             
         try:
             info(f"Attempting to unlock {vm}")
