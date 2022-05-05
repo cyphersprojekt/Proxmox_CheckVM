@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-QM='qm'
+QM='/usr/sbin/qm'
 PATH_LOG='/var/log/CheckVM.log'
 
 import ping3, datetime, subprocess, logging, argparse, sys
